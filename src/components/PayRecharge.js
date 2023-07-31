@@ -7,7 +7,6 @@ import { Loading } from '../components/Loading';
 import { getAllRates } from "../api/rates";
 import { rechargeStripe } from "../api/recharge";
 import { STRIPE_PUBLIC_KEY} from "../../env.js"
-import { ScrollView } from 'react-native-gesture-handler';
 const stripe = require("stripe-client")(STRIPE_PUBLIC_KEY)
 
 
@@ -62,16 +61,17 @@ export function PayRecharge ({closeModal, number, userId}){
 
         tarjeta = await stripe.createToken(information);
         if(tarjeta?.error){
+            setLoader()
             Alert.alert('Error!!', 'Los datos no correponde a ninguna tarjeta validad, verifique sus datos.');       
         }else{
             const response = await rechargeStripe(number, tarjeta.id, selectedValue, userId);
             setLoader()
             if (response.http_code == 1) {
-                Alert.alert('Exito!!', response.message);       
+                Alert.alert('Info', response.message);       
             }if(response.http_code == 0){
-                Alert.alert('Error!!', response.message);       
+                Alert.alert('Info', response.message);       
             }else{
-                Alert.alert('Error!!', response.message);       
+                Alert.alert('Info', response.message);       
             }
             setButton(false);
         }
@@ -80,49 +80,47 @@ export function PayRecharge ({closeModal, number, userId}){
     }
 
     return (
-        <ScrollView>
-            <View style={styles.modalPaymentRecharge}>
-                <View style={styles.ContentBanner}>
-                    <Text style={styles.textBanner}>Planes Disponibles</Text>
-                </View>
-                <View style={styles.containerPayment}>
-                    <View style={styles.container}>
-                        <Picker
-                            style={[styles.text, styles.select]}
-                            selectedValue={selectedValue}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedValue(itemValue)
-                            }>
-
-                            {offerts}
-                        </Picker>
-                    </View>
-                </View>
-                <Text style={styles.textCenter}>Datos de la tarjeta</Text>
-                <View style={styles.containerCreditCard}>
-                    <TextInput maxLength={16} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
-                                placeholder='Nombre del propietario' value={name} onChangeText={setName}/>
-                </View>
-
-                <View style={styles.containerCreditCard}>
-                    <TextInput maxLength={16} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
-                                placeholder='0000-0000-0000-0000' value={card} onChangeText={setCard}/>
-                </View>
-                <View  style={styles.containerCreditCard}>
-                    <TextInput maxLength={2} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
-                                placeholder='mes'  value={month} onChangeText={setMonth}/>
-                    <TextInput maxLength={2} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
-                                placeholder='año'  value={year} onChangeText={setYear}/>
-                    <TextInput maxLength={3} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
-                                placeholder='cvc'  value={cvc} onChangeText={setCvc}/>
-                </View>
-                <View style={styles.btns}>
-                    <Icon.Button style={[styles.btnsPay, styles.btnsPayDanger]} name='arrow-back-outline' onPress={() => closeModal()}>Regresar</Icon.Button>
-                    <Icon.Button disabled={button} style={[styles.btnsPay, styles.btnsPayPrimary]} name='cart-outline' onPress={() => createPay()}>Recargar</Icon.Button>
-                </View>   
-                {loader}
+        <View style={styles.modalPaymentRecharge}>
+            <View style={styles.ContentBanner}>
+                <Text style={styles.textBanner}>Planes Disponibles</Text>
             </View>
-        </ScrollView>
+            <View style={styles.containerPayment}>
+                <View style={styles.container}>
+                    <Picker
+                        style={[styles.text, styles.select]}
+                        selectedValue={selectedValue}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setSelectedValue(itemValue)
+                        }>
+
+                        {offerts}
+                    </Picker>
+                </View>
+            </View>
+            <Text style={styles.textCenter}>Datos de la tarjeta</Text>
+            <View style={styles.containerCreditCard}>
+                <TextInput maxLength={16} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
+                             placeholder='Nombre del propietario' value={name} onChangeText={setName}/>
+            </View>
+
+            <View style={styles.containerCreditCard}>
+                <TextInput maxLength={16} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
+                             placeholder='0000-0000-0000-0000' value={card} onChangeText={setCard}/>
+            </View>
+            <View  style={styles.containerCreditCard}>
+                <TextInput maxLength={2} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
+                            placeholder='mes'  value={month} onChangeText={setMonth}/>
+                <TextInput maxLength={2} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
+                            placeholder='año'  value={year} onChangeText={setYear}/>
+                <TextInput maxLength={3} style={[styles.input, styles.bordersInputs]} placeholderTextColor="#000" keyboardType='default'
+                            placeholder='cvc'  value={cvc} onChangeText={setCvc}/>
+            </View>
+            <View style={styles.btns}>
+                <Icon.Button style={[styles.btnsPay, styles.btnsPayDanger]} name='arrow-back-outline' onPress={() => closeModal()}>Regresar</Icon.Button>
+                <Icon.Button disabled={button} style={[styles.btnsPay, styles.btnsPayPrimary]} name='cart-outline' onPress={() => createPay()}>Recargar</Icon.Button>
+            </View>   
+            {loader}
+        </View>
     );
 }
 
