@@ -46,7 +46,6 @@ export function PayRecharge ({closeModal, number, userId}){
     }, [selectedValue])
     
     const createPay = async () => {
-        setLoader(<Loading/>)
         setButton(true);
         information = {
             card: {
@@ -58,8 +57,18 @@ export function PayRecharge ({closeModal, number, userId}){
             }
         }
 
-
         tarjeta = await stripe.createToken(information);
+
+        Alert.alert('Info', 'Desea realizar su compra?', [
+        { text: 'Cancelar', style: 'cancel',},
+        { text: 'Comprar', onPress: () => sellRate(tarjeta)},
+        ]);
+        
+        setButton(false);
+    }
+
+    const sellRate = async (tarjeta) =>{
+        setLoader(<Loading/>)
         if(tarjeta?.error){
             setLoader()
             Alert.alert('Error!!', 'Los datos no correponde a ninguna tarjeta validad, verifique sus datos.');       
@@ -75,8 +84,6 @@ export function PayRecharge ({closeModal, number, userId}){
             }
             setButton(false);
         }
-
-
     }
 
     return (
