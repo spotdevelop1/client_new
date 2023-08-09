@@ -522,11 +522,16 @@
 					"-lc++",
 				);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> afc8e12 (Revert "Merge branch 'main' of https://github.com/spotdevelop1/client_new")
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotunoclients.spotunoclients;
 				PRODUCT_NAME = clients_new_app;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = Spot1;
+>>>>>>> d21d9b49b3ffd50a3b026e8c31cabf3a18df4d97
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -555,12 +560,12 @@
 					"-ObjC",
 					"-lc++",
 				);
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> afc8e12 (Revert "Merge branch 'main' of https://github.com/spotdevelop1/client_new")
 				PRODUCT_BUNDLE_IDENTIFIER = com.spotunoclients.spotunoclients;
 				PRODUCT_NAME = clients_new_app;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = Spot1;
+>>>>>>> d21d9b49b3ffd50a3b026e8c31cabf3a18df4d97
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
