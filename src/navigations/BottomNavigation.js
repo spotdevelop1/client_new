@@ -2,7 +2,6 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Panel from '../views/Panel';
-import Recargas from '../views/Recargas';
 import RechargePrueba from '../views/RechargePrueba';
 import EstadoCuenta from '../views/EstadoCuenta';
 import { Image, Platform, StyleSheet, Text, TurboModuleRegistry } from 'react-native';
@@ -29,7 +28,7 @@ const MyTabs = () =>{
           : <TabsIndroid/>
 }
 
-const color = '#000';
+const color = '#05a';
 
 
 const TabsIndroid= () => {
@@ -38,13 +37,13 @@ const TabsIndroid= () => {
       tabBarIcon: ({}) =>{
         let iconName = ''
         switch (route.name) {
-          case 'Panel':
+          case 'Inicio':
             iconName = 'home-outline'         
             break;
           case 'Recargas':
             iconName = 'cash-outline'
             break;
-          case 'EstadoCuenta':
+          case 'Estado de Cuenta':
             iconName = 'document-text-outline'
             break;
         }
@@ -55,10 +54,9 @@ const TabsIndroid= () => {
       activeColor="#2D4C89"
       inactiveColor="#3e2465"
       barStyle={{ backgroundColor: '#FFFFFF' }}>
-      <Tab.Screen  name="Panel"  component={Panel} />
-      {/* <Tab.Screen name="Recargas" component={Recargas} /> */}
-      <Tab.Screen name="RechargePrueba"  component={RechargePrueba} />
-      <Tab.Screen name="EstadoCuenta" component={EstadoCuenta } />
+      <Tab.Screen  name="Inicio"  component={Panel} />
+      <Tab.Screen name="Recargas"  component={RechargePrueba} />
+      <Tab.Screen name="Estado de Cuenta" component={EstadoCuenta } />
     </Tab.Navigator>
   );
 }
