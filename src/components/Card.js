@@ -10,7 +10,9 @@ function Card({device}) {
     const [modalConsumo, setModalConsumo] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [status, setStatus] = useState('')
-    const [dateActivate, setDateActivate] = useState('')
+    // const [dateActivate, setDateActivate] = useState('')
+    const [planExp, setPlanExp] = useState('')
+    const [planInicio, setPlanInicio] = useState('')
     const [datosTotal, setDatosTotal] = useState('')
     const [datosConsumidos, setDatosConsumidos] = useState('')
     const [datosRestantes, setDatosRestantes] = useState('')
@@ -28,7 +30,13 @@ function Card({device}) {
         setIsLoading(true)
         const data = await consultUF(service, number)
             setStatus(data.status)
-            setDateActivate(data.date_activation)
+            // setDateActivate(data.date_activation)
+            if (data.expireRateDB) {
+                setPlanExp(data.expireRateDB)
+            }else{
+                setPlanExp(data.finPlan)
+            }
+            setPlanInicio(data.inicioPlan)
             setDatosTotal(data.datosTotal)
             setDatosConsumidos(data.datosConsumido)
             setDatosRestantes(data.datosRestantes)
@@ -80,7 +88,7 @@ function Card({device}) {
             </View>
             <Pressable style={styles.btnConsumos} onPress={()=> onClick(onClick)}><Text style={styles.textBtn}>Consumos de datos</Text></Pressable>
             <Modal transparent={true}  visible={modalConsumo}>
-                <ModalConsumo setModalConsumo={onClick} closeModal={closeModal}  service={service} status={status} dateActivate={dateActivate} datosTotal={datosTotal} datosConsumidos={datosConsumidos} datosRestantes={datosRestantes} datos={datos}/>
+                <ModalConsumo setModalConsumo={onClick} closeModal={closeModal}  service={service} status={status} planExp={planExp} planInicio ={planInicio} datosTotal={datosTotal} datosConsumidos={datosConsumidos} datosRestantes={datosRestantes} datos={datos}/>
             </Modal>
         </View>
     );

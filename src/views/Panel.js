@@ -7,6 +7,8 @@ import { TextInput } from 'react-native-gesture-handler';
 import { globalStyle } from '../styles/';
 import Card from '../components/Card';
 import { getDeviceApi } from '../api/devices';
+import { getDevice } from '../api/getDevice';
+import { getUserIdApi } from '../api/userId';
 
 function Panel() {
     const [dn, setdn] = useState('')
@@ -14,18 +16,18 @@ function Panel() {
     const [isLoading, setIsLoading] = useState(true)
     const [devices, setDevices] = useState()
     const {addDevice} = getDataDB()
-    useEffect(() => {
-        ( async () =>{
-            const device = await getDeviceApi()
 
-            // const arrayDevice = JSON.parse(device)
-            setDevices(device)
+    useEffect(() => {
+        // const clientId = 40;
+        ( async () =>{
+            const data = await getDeviceApi()
+            const user_id = data[0].user_id
+
+            const {devices} = await getDevice(user_id)
+            setDevices(devices)
             setIsLoading(false)
-          })()
+          })()  
     }, [])
-    console.log(devices)
-    
-// return false
     if (isLoading) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
@@ -38,9 +40,6 @@ function Panel() {
         <View style={styles.container}>
             
             <View style={styles.addDevice}>
-                {/* <Pressable style={[styles.btnAddDevice, {backgroundColor:'#FFFFFF'}]} onPress={() => setIsVisible(true)}>
-                    <Text style={{color:'black', alignItems:'center'}}> Dispositivo <Icon name='add-outline' size={25} color="blue"/></Text>
-                </Pressable> */}
 
                 <Modal animationType='slide' transparent={true} visible={isVisible}>
                     <View style={styles.modalAdd}>

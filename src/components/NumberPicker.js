@@ -25,6 +25,8 @@ function NumberPicker({ selectedValue, setSelectedValue }) {
         )
     }}
 
+
+
     return (
         <Picker
             style={styles.pickerNumber}

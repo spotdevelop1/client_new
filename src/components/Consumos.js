@@ -11,11 +11,10 @@ function Consumos({type, phone, dateStart, dateEnd}) {
   const consultConsums = async () => {
     const response = await consultCdrs(type, phone, dateStart, dateEnd);
     {for (let i = 0; i < response.length; i++) {
-      console.log('====================================');
-      console.log(response[i].consumos);
-      console.log('====================================');
+      // console.log('====================================');
+      // console.log(response[i].consumos);
+      // console.log('====================================');
       consum.push(
-        
         <View style={styles.contentOptions}>
           <View style={[styles.consumosContainer]}>
             <View style={[styles.consumosHeader]}>

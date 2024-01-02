@@ -56,7 +56,7 @@ function EstadoCuenta(  ) {
                 </Pressable >       
                 <Image style={styles.ConsumosLogo} source={require('../../assets/img/Consumos.png')}/>
             </View>
-        
+            
             <View style={styles.ContentBanner}>
                 <NumberPicker
                     selectedValue={selectedValue}
@@ -136,7 +136,7 @@ function EstadoCuenta(  ) {
                             androidVariant={'nativeAndroid'}
                         />
                     </View>
-           
+                    
                     <Pressable style={modal.buttonClose} onPress={()=>setModalShow(false)}>
                         <Text style={[styles.BtnConsult]}>Cerrar ventana</Text>
                     </Pressable>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     },
     ContentBanner:{
         backgroundColor:'#2f3541',
-        height:(Platform.OS === 'ios') ? 85:100,
+        height:100,
         justifyContent:'center',
         paddingHorizontal:20,
         position:'relative'
@@ -208,15 +208,15 @@ const styles = StyleSheet.create({
         color:'#8C8C8C'
     },
     seccionButtonsContainerMain:{
-        paddingHorizontal:40,
-        paddingBottom:(Platform.OS === 'ios') ? 30 : 60,
-        paddingTop:(Platform.OS === 'ios') ? 10 :30,
+        paddingHorizontal:50,
+        paddingBottom:60,
+        paddingTop:30,
     },
     seccionButtonsContainer:{
         position:'relative',
         flexDirection:'row',
         justifyContent:'space-between',
-        marginTop:(Platform.OS === 'ios') ? 10:20,
+        marginTop:30,
     },
     seccionButtons:{
         width:70,
@@ -241,13 +241,13 @@ const styles = StyleSheet.create({
     },
     containerConsumos:{
         flex:1,
-        marginTop:10,        
+        marginTop:3,        
         position:'relative',
         backgroundColor:'white',
     },
     contentConsumos:{
-        paddingHorizontal:20,
-        marginTop:60,
+        paddingHorizontal:50,
+        marginTop:50,
     },
     contentOptionsText:{
         color:'#818181', 
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         color:'white',
         fontSize:20,
-        marginTop:10,
+        marginTop:20,
         backgroundColor:'#2f3541',
         padding:10,
         paddingHorizontal:20,
@@ -346,15 +346,15 @@ const modal = StyleSheet.create({
         backgroundColor:'white',
         flex:1,
         justifyContent: 'flex-end',
-        paddingBottom: (Platform.OS === 'ios') ? 10 :100
+        paddingBottom: 100
     },
     containerDates:{
         alignSelf:'center',
         alignItems:'center',
-        paddingVertical:(Platform.OS === 'ios') ? 10 :40
+        paddingVertical:40
     },
     textTitle:{
-        paddingVertical:(Platform.OS === 'ios') ? 10 :20,
+        paddingVertical:20,
         fontSize:30,
         color:'black',
     }

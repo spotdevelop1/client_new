@@ -25,16 +25,22 @@ function DownloadDailyConsumption({type, phone, dateStart, dateEnd}) {
     const createPdf = async () => {     
         await searchConsumo()
         const pdfHtml = await PdfConsumption(Consumos, phone)
-        console.log('====================================');
-        console.log(pdfHtml);
-        console.log('====================================');
-        const options = {
-            html: pdfHtml,
-            fileName: 'Consumos',
-            directory: 'Documents'
-        }
+        
+        // console.log('====================================');
+        // console.log(pdfHtml);
+        // console.log('====================================');
 
+        let options = {
+                html: pdfHtml,
+                fileName: 'Consumos',
+                directory: 'Documents',
+            };
+      
         let fileDownload = await RNHTMLtoPDF.convert(options)
+
+        // console.log('====================================');
+        // console.log(fileDownload);
+        // console.log('====================================');
         // Alert.alert('Guardado exitoso!!', 'Ubicacion:' + fileDownload.filePath, [
         Alert.alert('Guardado exitoso!!', 'Puede descargar el archivo en la vista previa', [
             { text: 'Cerrar', style: 'cancel' },
@@ -44,31 +50,33 @@ function DownloadDailyConsumption({type, phone, dateStart, dateEnd}) {
 
 
     const askPermission = () => {
-        async function requestExternalWritePermission() {
-          try {
-            const granted = await PermissionsAndroid.request(
-              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-              {
-                title: 'Permisos para descargas dentro del la app',
-                message:
-                  'Para descargar este archivo necesitas conder permiso.',
-              }
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                createPdf();
-            } else {
-              alert('WRITE_EXTERNAL_STORAGE permission denied');
-            }
-          } catch (err) {
-            alert('Write permission err', err);
-            console.warn(err);
-          }
-        }
-        if (Platform.OS === 'android') {
-          requestExternalWritePermission();
-        } else {
-            createPdf();
-        }
+        createPdf();
+
+        // async function requestExternalWritePermission() {
+        //   try {
+        //     const granted = await PermissionsAndroid.request(
+        //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        //       {
+        //         title: 'Permisos para descargas dentro del la app',
+        //         message:
+        //           'Para descargar este archivo necesitas conder permiso.',
+        //       }
+        //     );
+        //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        //         createPdf();
+        //     } else {
+        //       alert('WRITE_EXTERNAL_STORAGE permission ');
+        //     }
+        //   } catch (err) {
+        //     alert('Write permission err', err);
+        //     console.warn(err);
+        //   }
+        // }
+        // if (Platform.OS === 'android') {
+        //   requestExternalWritePermission();
+        // } else {
+        //     createPdf();
+        // }
     }
 
     const openFile = (filepath) => {

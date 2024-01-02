@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { TextInput, StyleSheet, View ,Text, Alert} from 'react-native';
+import { TextInput, StyleSheet, View ,Text, Alert, Linking} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import {Picker} from '@react-native-picker/picker';
 import { globalStyle } from '../styles/'
 import { Loading } from '../components/Loading';
-import { getAllRates } from "../api/rates";
+import { getAllRates, verifyRates } from "../api/rates";
 import { rechargeStripe } from "../api/recharge";
 import { STRIPE_PUBLIC_KEY} from "../../env.js"
 const stripe = require("stripe-client")(STRIPE_PUBLIC_KEY)
 
 
 export function PayRecharge ({closeModal, number, userId}){
-    const [selectedValue, setSelectedValue] = useState("Planes Disponibles");
+    const [selectedValue, setSelectedValue] = useState(["Planes Disponibles"]);
     const [loader, setLoader] = useState([]);
     const [button, setButton] = useState(false);
-    const [rates, setRates] = useState([]);
+    const [rates, setRates] = useState([{}]);
+    const [offerts, setOfferts] = useState([]);
+    // const [rateId, setRateId] = useState('');
+    // const [offerID, setOfferID] = useState('');
     // const [numberRecharge, setNumberRecharge] = useState(number);
     const [name, setName] = useState("");
     const [card, setCard] = useState("");
@@ -22,29 +25,55 @@ export function PayRecharge ({closeModal, number, userId}){
     const [year, setYear] = useState("");
     const [cvc, setCvc] = useState("");
     
-    var offerts = [];
+    // var offerts = [];
     var information = {};
     var tarjeta = {};
 
-    const searchRates = async () => {
-        const offert = await getAllRates()
-        setRates(offert)
-    };
+    useEffect( () => {
+        searchOffer();
+    }, [])
 
-    {
-        if (rates['offers'] != undefined) {
-            for (let index = 0; index < rates['offers'].length; index++) {
+    const searchOffer = async () => {
+        let offerts = [];
+        let offert = await getAllRates();
+        offert = offert['offers']
+
+        const rates_limit = await verifyRates(number);
+        await setRates(offert);
+        
+        // console.log(rates);
+
+        offerts.push(<Picker.Item label={`Planes Disponibles`} value={0} />)
+        if (offert != undefined) {
+            for (let i = 0; i < rates_limit.length; i++) {
+                for (let index = 0; index < offert.length; index++) {
+                    if (rates_limit[i]['rate_id'] == offert[index].rate_id ) {
+                        // console.log(offert[index]);
+                        offert = offert.filter(elem => elem != offert[index]);
+                    }
+                }
+            }  
+
+            for (let index = 0; index < offert.length; index++) {
                 offerts.push(
-                    <Picker.Item label={`${rates['offers'][index].name } $${rates['offers'][index].price_sale }.00`} value={rates['offers'][index].offerID} />
+                    <Picker.Item label={`${offert[index].name } $${offert[index].price_sale }.00`} value={offert[index].rate_id} />
                 )
             }
         }
+
+        setOfferts(offerts)
     }
-   
-    useEffect(() => {
-        searchRates();
-    }, [selectedValue])
-    
+
+    const filterOffert = (offers) =>{
+        if (offers != undefined) {
+            for (let index = 0; index < offers.length; index++) {
+                if (offers[index].rate_id == selectedValue) {
+                    return offers[index].offerID;
+                }
+            }
+        }
+    }
+
     const createPay = async () => {
         setButton(true);
         information = {
@@ -60,8 +89,8 @@ export function PayRecharge ({closeModal, number, userId}){
         tarjeta = await stripe.createToken(information);
 
         Alert.alert('Info', 'Desea realizar su compra?', [
-        { text: 'Cancelar', style: 'cancel',},
-        { text: 'Comprar', onPress: () => sellRate(tarjeta)},
+            { text: 'Cancelar', style: 'cancel',},
+            { text: 'Comprar', onPress: () => sellRate(tarjeta)},
         ]);
         
         setButton(false);
@@ -69,19 +98,22 @@ export function PayRecharge ({closeModal, number, userId}){
 
     const sellRate = async (tarjeta) =>{
         setLoader(<Loading/>)
+        const offerID = await filterOffert(rates)
+        console.log(number, tarjeta.id, offerID, selectedValue, userId);
         if(tarjeta?.error){
             setLoader()
-            Alert.alert('Error!!', 'Los datos no correponde a ninguna tarjeta validad, verifique sus datos.');       
+            Alert.alert('Error!!', 'Los datos no correponde a ninguna tarjeta valida, verifique sus datos.');       
         }else{
-            const response = await rechargeStripe(number, tarjeta.id, selectedValue, userId);
+            const response = await rechargeStripe(number, tarjeta.id, [offerID, selectedValue], userId);
             setLoader()
-            if (response.http_code == 1) {
-                Alert.alert('Info', response.message);       
-            }if(response.http_code == 0){
-                Alert.alert('Info', response.message);       
-            }else{
-                Alert.alert('Info', response.message);       
-            }
+            console.log( response.ticket);
+            Alert.alert('Info', response.message, [
+                {
+                  text: 'Abrir ticket',
+                  onPress: () =>  Linking.openURL(response.ticket),
+                },
+                {text: 'Aceptar', onPress: () => console.log('OK Pressed')},
+              ]);
             setButton(false);
         }
     }
@@ -96,10 +128,7 @@ export function PayRecharge ({closeModal, number, userId}){
                     <Picker
                         style={[styles.text, styles.select]}
                         selectedValue={selectedValue}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedValue(itemValue)
-                        }>
-
+                        onValueChange={(itemValue) => setSelectedValue(itemValue)}>
                         {offerts}
                     </Picker>
                 </View>

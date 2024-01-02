@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import { Button, StyleSheet, View ,Text, ScrollView} from 'react-native';
-// import CircularProgress from 'react-native-circular-progress-indicator';
+import CircularProgress from 'react-native-circular-progress-indicator';
 import { globalStyle } from '../styles/'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export function ModalConsumo ({datosConsumidos, datosRestantes, closeModal, status, dateActivate,datosTotal, datos})  {
-    console.log(datos +' MODAL')
-    // const [imeiDis, setImeiDis] = useState(imei)
-    // useState
+export function ModalConsumo ({datosConsumidos, datosRestantes, closeModal, status, planInicio,datosTotal, planExp, datos})  {
   return (
     <View style={styles.modalConsumos}>
         <View style={styles.contentConsumos}>
@@ -24,21 +21,35 @@ export function ModalConsumo ({datosConsumidos, datosRestantes, closeModal, stat
                 </View>
                 <View style={styles.bodyConsumos}>
                     <View style={styles.infodateStatus}>
-                        <View>
-                            <Text style={styles.textBody}>Fecha de Activación</Text>
-                            <Text style={styles.text}>{dateActivate}</Text>
+                        <View style={{flex:1}}>
+                            <Text style={styles.textBody}>Fecha inicio Plan</Text>
+                            <Text style={styles.text}>{planInicio}</Text>
                         </View>
-                        <View>
+                        <View style={{flex:1}}>
                             <Text style={styles.textBody}>Estado</Text>
                             <Text style={styles.text}>{status}</Text>
                         </View>
-                        {/* <View>
-                            <Text style={styles.textBody}>Velocidad</Text>
-                            <Text style={styles.text}>10 mbs</Text>
-                        </View> */}
+                        <View style={{flex:1}}>
+                            <Text style={styles.textBody}>Fecha fin Plan</Text>
+                            <Text style={styles.text}>{planExp}</Text>
+                        </View>
 
                     </View>
-                    {/* <View style={[styles.dataConsumo]}>
+                    <View style={[styles.dataConsumo]}>
+                        <View style={styles.infodateStatus}>
+                            <View>
+                                <Text style={styles.textBody}>Contratado</Text>
+                                <Text style={styles.text}>{datosTotal.toFixed(2)} MB</Text>
+                            </View>
+                            <View>
+                                <Text style={styles.textBody}>Consumo</Text>
+                                <Text style={styles.text}>{datosConsumidos.toFixed(2)} MB</Text>
+                            </View>
+                            <View>
+                                <Text style={styles.textBody}>Restante </Text>
+                                <Text style={styles.text}>{datosRestantes.toFixed(2)} MB</Text>
+                            </View>
+                        </View>
                         
                                     <Text style={[styles.textBody, {fontSize:25}]}>Consumos: </Text>
                                 <View style={{alignContent: 'space-between', flexDirection:'column', marginTop:20, alignItems: 'center'}}>
@@ -60,22 +71,8 @@ export function ModalConsumo ({datosConsumidos, datosRestantes, closeModal, stat
                                           })
                                     }
                                 </View>
-                        <View style={styles.infodateStatus}>
                         
-                            <View>
-                                <Text style={styles.textBody}>Contratado</Text>
-                                <Text style={styles.text}>{datosTotal.toFixed(2)} Gb</Text>
-                            </View>
-                            <View>
-                                <Text style={styles.textBody}>Consumo</Text>
-                                <Text style={styles.text}>{datosConsumidos.toFixed(2)} GB</Text>
-                            </View>
-                            <View>
-                                <Text style={styles.textBody}>Restante </Text>
-                                <Text style={styles.text}>{datosRestantes.toFixed(2)} GB</Text>
-                            </View>
-                        </View>
-                    </View> */}
+                    </View>
                 </View>
             </ScrollView>
         </View>
