@@ -1,6 +1,8 @@
 package com.clients_new_app;
-
+import android.os.Bundle; // here
 import com.facebook.react.ReactActivity;
+// react-native-splash-screen >= 0.3.1
+import org.devio.rn.splashscreen.SplashScreen; // here
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
@@ -21,6 +23,12 @@ public class MainActivity extends ReactActivity {
    * DefaultReactActivityDelegate} which allows you to easily enable Fabric and Concurrent React
    * (aka React 18) with two boolean flags.
    */
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      SplashScreen.show(this);  // here
+      super.onCreate(savedInstanceState);
+  }
+
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new DefaultReactActivityDelegate(
