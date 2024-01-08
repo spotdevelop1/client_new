@@ -109,7 +109,7 @@ export function PayRecharge ({closeModal, number, userId}){
             console.log( response.ticket);
             Alert.alert('Info', response.message, [
                 {
-                  text: 'Abrir ticket',
+                  text: 'Ver tu comprobante de pago',
                   onPress: () =>  Linking.openURL(response.ticket),
                 },
                 {text: 'Aceptar', onPress: () => console.log('OK Pressed')},
